@@ -1,14 +1,13 @@
 package agency;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import util.TimeProvider;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Tag("agency")
 @DisplayName("Agency tests")
 public class AgencyTests {
     @DisplayName("Car tests")
@@ -110,5 +109,34 @@ public class AgencyTests {
             assertEquals("Motorbike Honda CBR 2020 (500cm3) 125.0€", motorbike.toString());
         }
 
+    }
+
+    @DisplayName("Client tests")
+    @Nested
+    class ClientTests {
+        Client client;
+
+        @BeforeEach
+        public void createClient() {
+            client = new Client("John", "Doe", 1998);
+        }
+
+        @Test
+        @DisplayName("Client info test")
+        public void clientCreationTest() {
+            assertEquals("John", client.getFirstName());
+            assertEquals("Doe", client.getLastName());
+        }
+
+        @Test
+        @DisplayName("Client setters test")
+        public void clientToStringTest() {
+            client.setFirstName("Jane");
+            client.setLastName("Smith");
+            client.setBirthYear(2000);
+            assertEquals("Jane", client.getFirstName());
+            assertEquals("Smith", client.getLastName());
+            assertEquals(2000, client.getBirthYear());
+        }
     }
 }

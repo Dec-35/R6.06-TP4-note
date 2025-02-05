@@ -5,6 +5,12 @@ public class Client {
     private String lastName;
     private int birthYear;
 
+    public Client(String firstName, String lastName, int birthYear) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthYear = birthYear;
+    }
+
     public String getFirstName() {
         return firstName;
     }
