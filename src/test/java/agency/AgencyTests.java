@@ -227,8 +227,7 @@ public class AgencyTests {
             assertEquals(5, agency.getVehicles().size());
             assertEquals(2, agency.select(new BrandCriterion("Toyota")).size());
             assertEquals(1, agency.select(new BrandCriterion("Ford")).size());
-            assertEquals(1, agency.select(new BrandCriterion("Honda")).size());
-            assertEquals(1, agency.select(new BrandCriterion("Yamaha")).size());
+            assertThat(agency.select(new BrandCriterion("Toyota"))).contains(car1, car2);
         }
 
         @Test

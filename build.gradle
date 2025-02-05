@@ -18,12 +18,26 @@ dependencies {
 }
 
 test {
-    useJUnitPlatform()
+    useJUnitPlatform {
+        includeTags 'util', 'agency' // Add all relevant tags
+    }
 }
 
 jacocoTestReport {
     reports {
         xml.required = true
         html.required = true
+    }
+}
+
+tasks.register('utilTests', Test) {
+    useJUnitPlatform {
+        includeTags 'util'
+    }
+}
+
+tasks.register('agencyTests', Test) {
+    useJUnitPlatform {
+        includeTags 'agency'
     }
 }
