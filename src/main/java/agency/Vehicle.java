@@ -28,7 +28,7 @@ public interface Vehicle {
 
     /**
      * Get a string representation of the vehicle.
-     * @return [type of vehicle] [brand] [model] [production year] [vehicle specific details] : [rental price]€
+     * @return [type of vehicle] [brand] [model] [production year] ([vehicle specific details]) : [rental price]€
      */
     String toString();
 }
