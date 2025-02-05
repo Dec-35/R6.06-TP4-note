@@ -51,11 +51,6 @@ public abstract class AbstractVehicle implements Vehicle{
         return this.productionYear;
     }
 
-    @Override
-    public double dailyRentalPrice() {
-        return 0;
-    }
-
     /**
      * Test if two cars are equal.
      * @param obj The object to compare to.

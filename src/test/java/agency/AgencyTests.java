@@ -139,4 +139,23 @@ public class AgencyTests {
             assertEquals(2000, client.getBirthYear());
         }
     }
+
+    @DisplayName("Vehicle equal test")
+    @Test
+    public void vehicleEqualTest() {
+        Car car1 = new Car("Toyota", "Corolla", 2019, 4);
+        Car car2 = new Car("Toyota", "Corolla", 2019, 4);
+        Car car3 = new Car("Toyota", "Corolla", 2019, 5);
+        Car car4 = new Car("Toyota", "Corolla", 2020, 4);
+        Car car5 = new Car("Toyota", "Yaris", 2019, 4);
+        Car car6 = new Car("Ford", "Fiesta", 2018, 4);
+        Motorbike motorbike1 = new Motorbike("Honda", "CBR", 2020, 500);
+
+        assertTrue(car1.equals(car2));
+        assertTrue(car1.equals(car3));
+        assertFalse(car1.equals(car4));
+        assertFalse(car1.equals(car5));
+        assertFalse(car1.equals(car6));
+        assertFalse(car1.equals(motorbike1));
+    }
 }
