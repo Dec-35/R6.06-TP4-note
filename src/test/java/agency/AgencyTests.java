@@ -1,9 +1,14 @@
 package agency;
 
+import agency.criteria.BrandCriterion;
+import agency.criteria.MaxPriceCriterion;
+import agency.exceptions.UnknownVehicleException;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import util.TimeProvider;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -151,11 +156,102 @@ public class AgencyTests {
         Car car6 = new Car("Ford", "Fiesta", 2018, 4);
         Motorbike motorbike1 = new Motorbike("Honda", "CBR", 2020, 500);
 
-        assertTrue(car1.equals(car2));
-        assertTrue(car1.equals(car3));
-        assertFalse(car1.equals(car4));
-        assertFalse(car1.equals(car5));
-        assertFalse(car1.equals(car6));
-        assertFalse(car1.equals(motorbike1));
+        assertEquals(car1, car2);
+        assertEquals(car1, car3);
+        assertNotEquals(car1, car4);
+        assertNotEquals(car1, car5);
+        assertNotEquals(car1, car6);
+        assertNotEquals(car1, motorbike1);
+    }
+
+    @DisplayName("Rental agency tests")
+    @Nested
+    class RentalAgencyTests {
+        RentalAgency agency;
+        Car car1;
+        Car car2;
+        Car car3;
+        Motorbike motorbike1;
+        Motorbike motorbike2;
+        Client client1;
+        Client client2;
+
+        @BeforeEach
+        public void createAgency() {
+            agency = new RentalAgency();
+            car1 = new Car("Toyota", "Corolla", 2019, 4);
+            car2 = new Car("Toyota", "Yaris", 2019, 4);
+            car3 = new Car("Ford", "Fiesta", 2018, 4);
+            motorbike1 = new Motorbike("Honda", "CBR", 2020, 500);
+            motorbike2 = new Motorbike("Yamaha", "R1", 2021, 1000);
+            client1 = new Client("John", "Doe", 1998);
+            client2 = new Client("Jane", "Smith", 2000);
+
+            agency.add(car1);
+            agency.add(car2);
+            agency.add(car3);
+            agency.add(motorbike1);
+            agency.add(motorbike2);
+        }
+
+        @Test
+        @DisplayName("Create agency with vehicles test")
+        public void createAgencyWithVehiclesTest() {
+            List<Vehicle> listOfVehicles = List.of(car1, car2, car3, motorbike1, motorbike2);
+            RentalAgency agency2 = new RentalAgency(listOfVehicles);
+            assertEquals(5, agency2.getVehicles().size());
+            assertTrue(agency2.getVehicles().contains(car1));
+            assertTrue(agency2.getVehicles().contains(car2));
+            assertTrue(agency2.getVehicles().contains(car3));
+            assertTrue(agency2.getVehicles().contains(motorbike1));
+            assertTrue(agency2.getVehicles().contains(motorbike2));
+        }
+
+        @Test
+        @DisplayName("Add vehicle test")
+        public void addVehicleTest() {
+            Car tempCar = new Car("Ford", "Ka", 2005, 2);
+            assertTrue(agency.add(tempCar));
+
+            assertFalse(agency.add(car1));
+            assertEquals(6, agency.getVehicles().size());
+            assertTrue(agency.getVehicles().contains(car1));
+            assertTrue(agency.getVehicles().contains(car2));
+            assertTrue(agency.getVehicles().contains(motorbike2));
+        }
+
+        @Test
+        @DisplayName("Select vehicles by brand test")
+        public void selectVehiclesTest() {
+            assertEquals(5, agency.getVehicles().size());
+            assertEquals(2, agency.select(new BrandCriterion("Toyota")).size());
+            assertEquals(1, agency.select(new BrandCriterion("Ford")).size());
+            assertEquals(1, agency.select(new BrandCriterion("Honda")).size());
+            assertEquals(1, agency.select(new BrandCriterion("Yamaha")).size());
+        }
+
+        @Test
+        @DisplayName("Select vehicles by max price test")
+        public void selectVehiclesByMaxPriceTest() {
+            assertEquals(3, agency.select(new MaxPriceCriterion(100)).size());
+            assertEquals(5, agency.select(new MaxPriceCriterion(300)).size());
+        }
+
+        @Test
+        @DisplayName("Remove vehicle test")
+        public void removeVehicleTest() {
+            assertEquals(5, agency.getVehicles().size());
+            agency.remove(car1);
+            assertEquals(4, agency.getVehicles().size());
+            assertFalse(agency.getVehicles().contains(car1));
+            assertThrows(UnknownVehicleException.class, () -> agency.remove(car1));
+        }
+
+        @Test
+        @DisplayName("Print selected vehicles test")
+        public void printSelectedVehiclesTest() {
+            agency.printSelectedVehicles(new BrandCriterion("Toyota"));
+            agency.printSelectedVehicles(new MaxPriceCriterion(100));
+        }
     }
 }

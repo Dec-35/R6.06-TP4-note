@@ -2,14 +2,12 @@ package agency;
 
 import agency.exceptions.UnknownVehicleException;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Predicate;
 
 public class RentalAgency {
-    private List<Vehicle> vehicles;
-    private Map<Client, Vehicle> rentedVehicles;
+    private final List<Vehicle> vehicles;
+    private final Map<Client, Vehicle> rentedVehicles;
 
     /**
      * Create a new rental agency with a list of vehicles.
@@ -17,13 +15,14 @@ public class RentalAgency {
      */
     public RentalAgency(List<Vehicle> vehicles) {
         this.vehicles = vehicles;
+        this.rentedVehicles = new HashMap<>();
     }
 
     /**
      * Create a new rental agency without any vehicle.
      */
     public RentalAgency(){
-        this.vehicles = List.of();
+        this(new ArrayList<>());
     }
 
     /**
@@ -67,7 +66,7 @@ public class RentalAgency {
     * @return the list of cars of this agency that satisfy the given criterion
     */
     public List<Vehicle > select (Predicate<Vehicle> criterion) {
-        List<Vehicle> selectedVehicles = List.of();
+        List<Vehicle> selectedVehicles = new ArrayList<>();
 
         for(Vehicle vehicle : this.vehicles){
             if(criterion.test(vehicle)){
