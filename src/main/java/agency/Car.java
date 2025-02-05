@@ -45,26 +45,58 @@ public class Car implements Vehicle{
         return false;
     }
 
+    /**
+     * Test if the car is new.
+     * @return true if the car is new (5 years old or less), false otherwise.
+     */
+    public boolean isNew(){
+        return this.productionYear - TimeProvider.currentYearValue() >= 5;
+    }
+
+    /**
+     * Get the brand of the car.
+     * @return The brand of the car.
+     */
     @Override
     public String getBrand() {
         return this.brand;
     }
 
+    /**
+     * Get the model of the car.
+     * @return The model of the car.
+     */
     @Override
     public String getModel() {
         return this.model;
     }
 
+    /**
+     * Get the production year of the car.
+     * @return The production year of the car.
+     */
     @Override
     public int getProductionYear() {
         return this.productionYear;
     }
 
+    /**
+     * Get the daily rental price of the car.
+     * @return The daily rental price of the car depending on the number of seats and the age of the car.
+     */
     @Override
     public double dailyRentalPrice() {
-        return 0;
+        if(this.isNew()) {
+            return this.numberOfSeats * 40;
+        } else {
+            return this.numberOfSeats * 20;
+        }
     }
 
+    /**
+     * Get a string representation of the car.
+     * @return Car [brand] [model] [production year] ([number of seats] seat(s)) : [daily rental price]€
+     */
     @Override
     public String toString() {
         return "Car " + this.brand + " " +
