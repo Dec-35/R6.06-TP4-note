@@ -10,6 +10,7 @@ import util.TimeProvider;
 
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Tag("agency")
@@ -252,6 +253,49 @@ public class AgencyTests {
         public void printSelectedVehiclesTest() {
             agency.printSelectedVehicles(new BrandCriterion("Toyota"));
             agency.printSelectedVehicles(new MaxPriceCriterion(100));
+        }
+
+        @Test
+        @DisplayName("Rental creation test")
+        public void rentalCreationTest() {
+            double price = agency.rentVehicle(client1, car1);
+            assertEquals(4*20, price);
+        }
+
+        @Test
+        @DisplayName("Rental creation test with unknown vehicle")
+        public void rentalCreationTestWithUnknownVehicle() {
+            assertThrows(UnknownVehicleException.class, () -> agency.rentVehicle(client1, new Car("Renault", "Zoe", 2019, 4)));
+        }
+
+        @Test
+        @DisplayName("Rental creation test with already rented vehicle")
+        public void rentalCreationTestWithAlreadyRentedVehicle() {
+            agency.rentVehicle(client1, car1);
+            assertThrows(IllegalStateException.class, () -> agency.rentVehicle(client2, car1));
+        }
+
+        @Test
+        @DisplayName("Rental creation test with client already having a rented vehicle")
+        public void rentalCreationTestWithClientAlreadyHavingRentedVehicle() {
+            agency.rentVehicle(client1, car1);
+            assertThrows(IllegalStateException.class, () -> agency.rentVehicle(client1, car2));
+        }
+
+        @Test
+        @DisplayName("Return vehicle test")
+        public void returnVehicleTest() {
+            agency.rentVehicle(client1, car1);
+            assertTrue(agency.aVehicleIsRentedBy(client1));
+            agency.returnVehicle(client1);
+            assertFalse(agency.aVehicleIsRentedBy(client1));
+        }
+
+        @Test
+        @DisplayName("Rented vehicle list test")
+        public void rentedVehicleListTest() {
+            agency.rentVehicle(client1, car1);
+            assertThat(agency.allRentedVehicles()).contains(car1);
         }
     }
 }
