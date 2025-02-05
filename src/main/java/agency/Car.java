@@ -29,7 +29,7 @@ public class Car extends AbstractVehicle{
      * @return true if the car is new (5 years old or less), false otherwise.
      */
     public boolean isNew(){
-        return this.getProductionYear() - TimeProvider.currentYearValue() >= 5;
+        return TimeProvider.currentYearValue() - this.getProductionYear() <= 5;
     }
 
     /**
